@@ -13,10 +13,10 @@ I currently have plans to address:
 * Additional User Metadata when creating assessments
 * Support for alternate forms of authentication
 
-- Rand
+-Rand
 
-============
-Netflix Originally Deprecated this Tool
+
+# Netflix Original Readme #
 *July 24th, 2018*
 
 
