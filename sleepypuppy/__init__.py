@@ -10,6 +10,7 @@ from functools import wraps
 from flask.ext.sqlalchemy import SQLAlchemy
 import flask_wtf
 import os
+import base64
 
 # Config and App setups
 app = Flask(__name__, static_folder='static')
@@ -18,6 +19,9 @@ app.config.update(dict(
     PREFERRED_URL_SCHEME='https'
 ))
 app.debug = app.config.get('DEBUG')
+
+# custom filters
+app.jinja_env.filters['b64decode'] = base64.b64decode
 
 # Log handler functionality
 handler = RotatingFileHandler(app.config.get('LOG_FILE'), maxBytes=10000000, backupCount=100)
@@ -160,7 +164,6 @@ flask_admin.add_view(AccessLogView(db.session))
 flask_admin.add_view(UserView(db.session))
 flask_admin.add_view(AssessmentView(db.session))
 flask_admin.add_view(AdministratorView(Administrator, db.session))
-
 
 @app.after_request
 def after_request(response):

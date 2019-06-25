@@ -1,5 +1,22 @@
---------------------DEPRECATED-------------------
+
+# Sleepy Puppy #
+
+I've currently updated SleepyPuppy to include additional features:
+* Support for LocalStorage and SessionStorage retrieval by Default
+* Support for modern bootstrap theming
+* Updates to build depedencies which failed in prior version
+* Made sleepypuppy Orange :)
+
+I currently have plans to address:
+* Adding LocalStorage & SessionStorage to GenericCollector template & model
+* The Burp Plugin and make it compatible with burp 2.0
+* Additional User Metadata when creating assessments
+* Support for alternate forms of authentication
+
+- Rand
+
 ============
+Netflix Originally Deprecated this Tool
 *July 24th, 2018*
 
 

@@ -28,6 +28,10 @@ class Capture(db.Model):
     payload = to be removed
     screenshot = screenshot identifier
     pub_date = Date with which the capture was received
+    dom = the dom from the client who executed the script
+    local_storage = HTML5 local storage
+    session_storage = HTML5 session storage
+
     """
     __tablename__ = 'captures'
 
@@ -36,6 +40,8 @@ class Capture(db.Model):
     url = db.Column(db.Text(), unique=False)
     referrer = db.Column(db.Text(), unique=False)
     cookies = db.Column(db.Text(), unique=False)
+    session_storage = db.Column(db.Text(), unique=False)
+    local_storage = db.Column(db.Text(), unique=False)
     user_agent = db.Column(db.Text(), unique=False)
     payload = db.Column(db.Integer)
     screenshot = db.Column(db.String(20), unique=False)
@@ -46,12 +52,14 @@ class Capture(db.Model):
         """Return Capture model as JSON object"""
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
-    def __init__(self, assessment, url, referrer, cookies, user_agent,
+    def __init__(self, assessment, url, referrer, cookies,session_storage,local_storage,user_agent,
                  payload, screenshot, dom, pub_date=None):
         self.assessment = assessment
         self.url = url
         self.referrer = referrer
         self.cookies = cookies
+        self.session_storage = session_storage
+        self.local_storage = local_storage
         self.user_agent = user_agent
         self.payload = payload
         self.screenshot = screenshot

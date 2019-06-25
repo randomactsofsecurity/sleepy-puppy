@@ -22,6 +22,14 @@ div.tooltip-inner {
 {% endblock %}
 
 {% block body %}
+{% if count %}
+<div class="bs-docs-section" style="margin-left:-12em">
+{% else %}  
+<div class="bs-docs-section">
+  {% endif %}
+  
+    <div class="row">
+    <div class="col-lg-12">
     {% block model_menu_bar %}
     <ul class="nav nav-tabs actions-nav">
         <li class="active">
@@ -137,7 +145,7 @@ div.tooltip-inner {
                 {% endblock %}
        {% for c, name in list_columns %}
         {% if c == 'screenshot' and get_value(row, c) != "" %}
-        <td><a href="/up/{{get_value(row, c)}}.png"><img src="/up/small_{{get_value(row, c)}}.png"/></a></td>
+        <td><a href="/sp/up/{{get_value(row, c)}}.png"><img src="/sp/up/small_{{get_value(row, c)}}.png"/></a></td>
         {% elif c == 'screenshot' and get_value(row, c) == "" %}
         <td>No screenshot</td>
         {% elif c == 'url' %}
@@ -172,8 +180,8 @@ div.tooltip-inner {
                         <th>Cookie</th>
                         <th>Value</th>
                     </tr>
-                </thead>
-                <tdbody>
+                  </thead>
+                  <tdbody>
                     {% set count = 1 %}
                     {% for cookies in get_value(row, c).split('; ') %}
                     {% set count = loop.index %}
@@ -187,8 +195,8 @@ div.tooltip-inner {
                         </td>
                         <tr>
                             {% endfor %}
-                        </tdbody>
-                    </table>
+                    </tdbody>
+                  </table>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
@@ -197,6 +205,92 @@ div.tooltip-inner {
                 </div>
                 </div>
             </div>
+            {% elif c =='session_storage' and get_value(row, c) != ""-%}
+            <td>
+                <a href="#session_storage-modal{{row.id}}" role="button" class="btn btn-default" onClick="$('#session_storage-modal{{row.id}}').modal()">View Session Storage</a>
+
+                <div id="session_storage-modal{{row.id}}" class="modal fade" tabindex="-1" role="dialog"  aria-labelledby="session_storage-modalLabel{{row.id}}">
+                    <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 id="session_storage-modalLabel{{row.id}}">Session Storage</h3>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped table-bordered" style="table-layout: fixed;word-wrap: break-word;">
+                    <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tdbody>
+                        {% set count = 1 %}
+                        {% for kvp in get_value(row, c).split(';') %}
+                        {% set count = loop.index %}
+                        <tr>
+                            <td>
+                                {% set splits = kvp.split('$', 1)%}
+                                {{splits[0] | b64decode}}
+                            </td>
+                            <td>
+                                {{splits[1] | b64decode}}
+                            </td>
+                            <tr>
+                                {% endfor %}
+                            </tdbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
+
+                    </div>
+                    </div>
+                    </div>
+                </div>
+            {% elif c =='local_storage' and get_value(row, c) != ""-%}
+            <td>
+                <a href="#local_storage-modal{{row.id}}" role="button" class="btn btn-default" onClick="$('#local_storage-modal{{row.id}}').modal()">View Local Storage</a>
+
+                <div id="local_storage-modal{{row.id}}" class="modal fade" tabindex="-1" role="dialog"  aria-labelledby="local_storage-modalLabel{{row.id}}">
+                    <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 id="local_storage-modalLabel{{row.id}}">Local Storage</h3>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped table-bordered" style="table-layout: fixed;word-wrap: break-word;">
+                    <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tdbody>
+                        {% set count = 1 %}
+                        {% for kvp in get_value(row, c).split(';') %}
+                        {% set count = loop.index %}
+                        <tr>
+                            <td>
+                                {% set splits = kvp.split('$', 1)%}
+                                {{splits[0] | b64decode}}
+                            </td>
+                            <td>
+                                {{splits[1] | b64decode}}
+                            </td>
+                            <tr>
+                                {% endfor %}
+                            </tdbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
+
+                    </div>
+                    </div>
+                    </div>
+                </div>
             {% elif c =='dom' and get_value(row, c) != "" -%}
             <td>
                <!-- modal tigger -->
@@ -258,6 +352,9 @@ div.tooltip-inner {
 </tr>
 {% endfor %}
 </table>
+</div>
+</div>
+</div>
 {{ lib.pager(page, num_pages, pager_url) }}
 {% endblock %}
 

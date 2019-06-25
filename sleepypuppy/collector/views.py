@@ -343,6 +343,8 @@ def get_callbacks():
             referrer = urllib.unquote(
                 unicode(request.form.get('referrer', '')))
             cookies = urllib.unquote(unicode(request.form.get('cookies', '')))
+            local_storage = urllib.unquote(unicode(request.form.get('local_storage','')))
+            session_storage = urllib.unquote(unicode(request.form.get('session_storage','')))
             user_agent = urllib.unquote(
                 unicode(request.form.get('user_agent', '')))
             payload = Payload.query.filter_by(
@@ -357,6 +359,8 @@ def get_callbacks():
                                       url,
                                       referrer,
                                       cookies,
+                                      session_storage,
+                                      local_storage,
                                       user_agent,
                                       0,
                                       screenshot,
@@ -367,6 +371,8 @@ def get_callbacks():
                                       url,
                                       referrer,
                                       cookies,
+                                      session_storage,
+                                      local_storage,
                                       user_agent,
                                       payload.id,
                                       screenshot,

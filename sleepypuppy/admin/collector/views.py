@@ -41,7 +41,7 @@ class GenericCollectorView(ModelView):
         'puppyscript_name',
         'url',
         'referrer',
-        'data'
+        'data',
     )
     column_filters = ('id', 'assessment', 'payload', 'puppyscript_name', 'url', 'referrer')
 
